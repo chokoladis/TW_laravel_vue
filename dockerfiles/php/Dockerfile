@@ -26,14 +26,16 @@ RUN set -eux; \
 RUN apk add bash \
         libzip \
         zlib \
+        libpq \
         libpng \
         libjpeg-turbo \
         freetype \
         icu-libs \
+        postgresql-dev \
         libxml2 \
         curl; \
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
-    docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsq; \
+    docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql; \
     docker-php-ext-install \
         pdo \
         pdo_pgsql \

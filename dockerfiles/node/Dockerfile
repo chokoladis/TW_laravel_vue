@@ -3,13 +3,11 @@ LABEL org.opencontainers.image.authors="github@chokoladis"
 
 WORKDIR /var/www/tw_app
 
-COPY package*.json vite.config.js* ./
+COPY package*.json ./
 
-#RUN npm install npm@11.6.2 -g && npm install npm@11.6.2
-RUN npm ci
+RUN npm install npm@11.6.2 --include=optional
 
 COPY . .
-RUN ls
-#RUN npm run build
+RUN npm run build
 
 CMD ["npm", "run", "dev", "--", "--host"]

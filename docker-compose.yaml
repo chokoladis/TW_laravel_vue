@@ -13,13 +13,9 @@ services:
             context: .
             dockerfile: dockerfiles/php/Dockerfile
         volumes:
-            - '.:/var/www/tw_app'
+          - .:/var/www/tw_app
         container_name: tw_app_php
-        deploy:
-            resources:
-                limits:
-                    cpus: '4.0'
-                    memory: 1G
+
     node:
         build:
           context: .
@@ -27,10 +23,13 @@ services:
         container_name: tw_app_node
         ports:
           - "5173:5173"
-#        volumes:
-#          - .:/var/www/tw_app
+        volumes:
+          - .:/var/www/tw_app
+          - /var/www/tw_app/node_modules
+        environment:
+          - NODE_ENV=development
     db:
-        image: 'postgres:18'
+        image: 'postgres:17.9-alpine'
         container_name: tw_app_db
         ports:
             - '5433:5432'
