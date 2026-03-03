@@ -1,27 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Catalog;
 
-use App\Http\Requests\Product\IndexRequest;
-use App\Models\Product;
-use App\Services\Catalog\ProductService;
+use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
-    private ProductService $productService;
-
-    function __construct()
-    {
-        $this->productService = new ProductService();
-    }
-
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexRequest $request)
+    public function index()
     {
-        return $this->productService->get($request->validated());
+        //
     }
 
     /**
@@ -43,15 +35,15 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $product)
+    public function show(Category $category)
     {
-        return $this->productService->getOne($product);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Category $category)
     {
         //
     }
@@ -59,7 +51,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Category $category)
     {
         //
     }
@@ -67,7 +59,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Category $category)
     {
         //
     }

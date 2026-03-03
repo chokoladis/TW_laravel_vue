@@ -13,8 +13,7 @@ class ProductService
         $perPage = $data['perPage'] ?? self::DEFAULT_PER_PAGE;
 
         $products = Product::query()->paginate($perPage);
-
-        return $products; //ProductResource::collection($products);
+        return ProductResource::collection($products);
     }
 
     public function getOne(int $productId)
