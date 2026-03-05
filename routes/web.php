@@ -10,8 +10,14 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('h
 //
 //})
 Route::middleware([\App\Http\Middleware\HandleInertiaRequests::class])->group(function () {
-    Route::post('/api/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
-    Route::get('/login', [\App\Http\Controllers\AuthController::class, 'loginPage'])->name('loginPage');
+    Route::post('/api/login', [\App\Http\Controllers\AuthController::class, 'store'])->name('store');
+    Route::get('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
 });
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+});
+
+
 //Route::get('/register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
 //Route::post('/register', [\App\Http\Controllers\AuthController::class, 'actionRegister'])->name('actionRegister');

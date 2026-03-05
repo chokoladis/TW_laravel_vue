@@ -16,11 +16,14 @@
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="/">Главная</a>
                             </li>
-                            <li class="nav-item" v-if="(!$page.props.user)">
+                            <li class="nav-item" v-if="(!$page.props.auth)">
                                 <a class="nav-link" href="/login">Вход</a>
                             </li>
-                            <li class="nav-item" v-if="(!$page.props.user)">
+                            <li class="nav-item" v-if="(!$page.props.auth)">
                                 <a class="nav-link" href="/register">Регистрация</a>
+                            </li>
+                            <li class="nav-item" v-if="($page.props.auth)">
+                                <a class="nav-link" href="/logout">Выход</a>
                             </li>
                         </ul>
                     </div>
