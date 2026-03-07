@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { useForm } from "@inertiajs/vue3";
-    import Header from '../../include/Header.vue';
+    import Header from '../Components/Header.vue';
 
     const form = useForm({
         name: '',

@@ -1,9 +1,13 @@
 <script lang="ts" setup>
-    import {page} from "@inertiajs/core/types/page";
+    import {Form, Link } from "@inertiajs/vue3";
 
     defineProps({
         message: String,
     });
+
+    const successLogout = () => {
+        localStorage.removeItem('token');
+    }
 </script>
 
 <template>
@@ -14,16 +18,20 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="/">Главная</a>
+                                <Link class="nav-link active" aria-current="page" href="/">Главная</Link>
                             </li>
                             <li class="nav-item" v-if="(!$page.props.auth)">
-                                <a class="nav-link" href="/login">Вход</a>
+                                <Link class="nav-link" href="/login">Вход</Link>
                             </li>
                             <li class="nav-item" v-if="(!$page.props.auth)">
-                                <a class="nav-link" href="/register">Регистрация</a>
+                                <Link class="nav-link" href="/register">Регистрация</Link>
+<!--                                mb use route('auth.register-page')-->
                             </li>
                             <li class="nav-item" v-if="($page.props.auth)">
-                                <a class="nav-link" href="/logout">Выход</a>
+                                <Link class="nav-link" href="/admin/products">Управление товарами</Link>
+                            </li>
+                            <li class="nav-item" v-if="($page.props.auth)">
+                                <Link class="nav-link" href="/logout" method="post" onSuccess="successLogout">Выйти</Link>
                             </li>
                         </ul>
                     </div>

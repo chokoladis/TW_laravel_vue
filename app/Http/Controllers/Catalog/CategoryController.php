@@ -4,16 +4,23 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\Catalog\CategoryService;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    private CategoryService $categoryService;
+
+    public function __construct()
+    {
+        $this->categoryService = new CategoriesService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $this->categoryService->getAllCategories();
     }
 
     /**
@@ -56,11 +63,4 @@ class CategoryController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
-    }
 }

@@ -1,38 +1,48 @@
 <script setup lang="ts">
-import { useForm } from "@inertiajs/vue3";
+    import { Form } from "@inertiajs/vue3";
 
-const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirm: '',
-})
+    const formData = {
+        name: '',
+        category_id: null,
+
+    }
+
+    defineProps({
+        categories: Array
+    })
 </script>
 
 <template>
     <main>
         <div class="container">
-            <form>
-                <h1>login form</h1>
+            <Form
+                action="/api/products"
+                :data="formData"
+                method="post"
+                v-slot="form"
+            >
                 <div class="mb-3">
-                    <label for="name" class="form-label">Введите имя</label>
-                    <input type="text" v-model="form.name" id="name" class="form-control">
+                    <label for="name" class="form-label">Название</label>
+                    <input type="text" name="name" id="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Категория</label>
+                    <select name="category_id" id="" v-for="category in categories">
+                        {{ category }}
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea name="description" cols="30" rows="10"></textarea>
                 </div>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" v-model="form.email" id="email" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" id="password" v-model="form.password">
-                </div>
-                <div class="mb-3">
-                    <label for="password_confirm" class="form-label">Подтвердите пароль</label>
-                    <input type="password" class="form-control" id="password_confirm" v-model="form.password_confirm">
+                    <label for="price" class="form-label">Цена</label>
+                    <input type="number" class="form-control" name="price">
                 </div>
                 <button class="btn btn-primary" @click="form.post('/register')">Отправить</button>
-            </form>
+            </Form>
         </div>
     </main>
 

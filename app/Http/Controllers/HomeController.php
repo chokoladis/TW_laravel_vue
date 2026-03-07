@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index(IndexRequest $request)
     {
         return Inertia::render('Home', [
-            'posts' => (new \App\Services\Catalog\ProductService())->get($request->validated())
+            'products' => (new \App\Services\Catalog\ProductService())->get($request->validated())
         ]);
     }
 }

@@ -8,6 +8,8 @@ services:
             - './dockerfiles/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:ro'
             - '.:/var/www/tw_app'
         container_name: tw_app_nginx
+        depends_on:
+          - php
     php:
         build:
             context: .
@@ -15,6 +17,14 @@ services:
         volumes:
           - .:/var/www/tw_app
         container_name: tw_app_php
+        deploy:
+          resources:
+            limits:
+              memory: 512M
+            reservations:
+              memory: 128M
+        depends_on:
+          - db
 
     node:
         build:
@@ -28,6 +38,10 @@ services:
           - /var/www/tw_app/node_modules
         environment:
           - NODE_ENV=development
+        deploy:
+          resources:
+            limits:
+              memory: 512M
     db:
         image: 'postgres:17.9-alpine'
         container_name: tw_app_db
@@ -37,6 +51,10 @@ services:
             POSTGRES_USER: '${DB_USERNAME}'
             POSTGRES_PASSWORD: '${DB_PASSWORD}'
             POSTGRES_DB: '${DB_DATABASE}'
+        deploy:
+          resources:
+            limits:
+              memory: 1024M
     pgadmin:
         image: 'dpage/pgadmin4:9.12'
         container_name: tw_app_pgadmin
@@ -46,3 +64,6 @@ services:
             PGADMIN_DEFAULT_EMAIL: '${PGADMIN_EMAIL}'
             PGADMIN_DEFAULT_PASSWORD: '${PGADMIN_DEFAULT_PASSWORD}'
             PMA_HOST: db
+
+        depends_on:
+          - db

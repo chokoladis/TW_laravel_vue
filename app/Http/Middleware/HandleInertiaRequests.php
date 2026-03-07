@@ -44,7 +44,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => auth()->user() ? [
                 'user' => [
                     'name' => auth()->user()->name
-                ]
+                ],
+                'token' => auth()->user()->currentAccessToken()
+                    ?? session()->has('token') ? session()->get('token') : null,
             ] : null
         ]);
     }

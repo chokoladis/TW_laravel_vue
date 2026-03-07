@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import Header from '../../include/Header.vue';
+    import Header from '../Components/Header.vue';
     import { Form } from '@inertiajs/vue3';
     import {ref} from "vue";
 
@@ -7,6 +7,11 @@
         email: '',
         password: '',
     }
+
+    const onSuccess = (page: any) => {
+        localStorage.setItem('token', page.props.auth.token);
+    }
+
 </script>
 
 <template>
@@ -14,10 +19,12 @@
     <main>
         <div class="container">
             <h1>Форма входа</h1>
-            <Form action="/api/login"
-                  :data="formState"
-                  method="post"
-                  v-slot="form"
+            <Form
+                action="/api/login"
+                method="post"
+                :data="formState"
+                v-slot="form"
+                @success="onSuccess"
             >
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>

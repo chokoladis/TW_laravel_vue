@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\Auth\LoginException;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Services\AuthService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AuthController extends Controller
@@ -26,30 +23,21 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $this->authService->logout($request);
 
         return redirect('/');
     }
 
-    public function store(LoginRequest $request)
+    public function authByLogin(LoginRequest $request)
     {
-        try {
-            if (Auth::attempt($request->validated())) {
-                $request->session()->regenerate();
-
-                return redirect()->intended();
-            }
-
-            return back()->withErrors([
-                'email' => 'Некорректный email/пароль',
-            ])->onlyInput('email');
-        } catch (ModelNotFoundException|LoginException $e) {
-            return redirect()->back()->withErrors(['email' => 'Некорректный email/пароль'])->onlyInput('email');
+        if ($token = $this->authService->login($request)) {
+            return redirect()->route('home')
+                ->with('token', $token);
         }
+
+        return back()->withErrors([
+            'email' => 'Некорректный email/пароль',
+        ])->onlyInput('email');
     }
 
 //    public function register(RegisterRequest $request)
