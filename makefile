@@ -16,11 +16,10 @@ db-start:
 	docker exec -w /var/www/tw_app tw_app_php sh -c "php artisan db:seed DatabaseSeeder && php artisan db:seed QuestionSeeder"
 	docker exec -w /var/www/tw_app tw_app_php sh -c "php artisan db:seed TagSeeder && php artisan db:seed QuestionTagsSeeder && php artisan db:seed UserTagsSeeder"
 
-#todo
 db-restore:
-	gunzip -c dumps/tw_app.sql.gz | docker exec -i tw_app_db psql -X -u$(DB_USERNAME) -p$(DB_PASSWORD) $(DB_DATABASE);
+	gunzip -c dumps/tw_app.sql.gz | docker exec -i tw_app_db psql -U$(DB_USERNAME) -d$(DB_DATABASE);
 db-export:
-	docker exec tw_app_db pg_dump -u$(DB_USERNAME) -p$(DB_PASSWORD) $(DB_DATABASE) | gzip > dumps/tw_app_$(shell date +%F).sql.gz
+	docker exec tw_app_db pg_dump -U$(DB_USERNAME) $(DB_DATABASE) | gzip > dumps/tw_app_$(shell date +%F).sql.gz
 
 install-composer:
 	docker exec -w /var/www/tw_app tw_app_php composer install --no-interaction --prefer-dist --optimize-autoloader

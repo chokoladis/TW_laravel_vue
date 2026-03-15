@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import Header from '../Components/Header.vue';
     import { Form } from '@inertiajs/vue3';
-    import {ref} from "vue";
 
     const formState = {
         email: '',
@@ -20,7 +19,7 @@
         <div class="container">
             <h1>Форма входа</h1>
             <Form
-                action="/api/login"
+                action="/login"
                 method="post"
                 :data="formState"
                 v-slot="form"

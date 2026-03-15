@@ -1,6 +1,6 @@
 <script setup>
-    import Header from './components/Header.vue';
-    import ProductList from "./components/ProductList.vue";
+    import ProductList from "./Components/ProductList.vue";
+    import Template from "./Layouts/Template.vue";
 
     defineProps({
         products: Object
@@ -9,17 +9,13 @@
 </script>
 
 <template>
-    <Header></Header>
-    <ProductList :products></ProductList>
+    <Template>
+            <ProductList :products></ProductList>
+    </Template>
 </template>
 
 <style scoped>
     main {
         margin-top: 40px;
-    }
-    main nav {
-        margin: 0px auto;
-        margin-top: 20px;
-        width: fit-content;
     }
 </style>

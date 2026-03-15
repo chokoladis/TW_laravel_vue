@@ -18,8 +18,8 @@
         "vite-plugin-vue-devtools": "^8.0.7"
     },
     "dependencies": {
-        "@inertiajs/core": "^2.3.17",
-        "@inertiajs/vue3": "^2.3.17",
+        "@inertiajs/core": "^2.3.18",
+        "@inertiajs/vue3": "^2.3.18",
         "@vitejs/plugin-vue": "^6.0.4",
         "bootstrap": "^5.3.8",
         "vue": "^3.5.29"

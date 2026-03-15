@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\IndexRequest;
+use App\Http\Requests\Product\StoreRequest;
+use App\Http\Resources\Catalog\ProductResource;
 use App\Models\Product;
 use App\Services\Catalog\CategoryService;
 use App\Services\Catalog\ProductService;
@@ -22,19 +24,13 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index(IndexRequest $request)
-    {
-        return $this->productService->get($request->validated());
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(int $product)
     {
-        return $this->productService->getOne($product);
+        return Inertia::render('Catalog/Products/Detail', [
+            'product' => (new \App\Services\Catalog\ProductService())->getOne($product)
+        ]);
     }
 
 
@@ -42,7 +38,7 @@ class ProductController extends Controller
 
     public function adminIndex(IndexRequest $request)
     {
-        return Inertia::render('Catalog/Products/List', [
+        return Inertia::render('Admin/Products/Index', [
             'products' => (new \App\Services\Catalog\ProductService())->get($request->validated())
         ]);
     }
@@ -52,7 +48,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Catalog/Products/Create', [
+        return Inertia::render('Admin/Products/Create', [
             'categories' => $this->categoryService->getAllCategories(),
         ]);
     }
@@ -60,13 +56,15 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-//        Название (input),
-//        Категория (select, загружается из GET /api/categories),
-//        Описание (textarea),
-//        Цена (input type number).
-        dd('store');
+        if (Product::create($request->validated())) {
+            return redirect(route('admin.products.index'))->with('message', 'Товар успешно добавлен');
+        }
+
+        return back()->withErrors([
+            'Ошибка создания товара'
+        ]);
     }
 
     /**
@@ -77,19 +75,4 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
 }

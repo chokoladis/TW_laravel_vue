@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Catalog\ProductController;
+use App\Http\Controllers\API\ProductController as ApiProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Support\Facades\Route;
@@ -9,10 +10,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::middleware([HandleInertiaRequests::class])->group(function () {
-    Route::get('/login', [AuthController::class, 'login'])->name('auth.login-page');
-    Route::post('/api/login', [AuthController::class, 'authByLogin'])->name('auth.login');
+Route::group(['controller' => ProductController::class, 'prefix' => '/products'], function () {
+    Route::get('/{id}', 'show');
 });
+
+Route::get('/login', [AuthController::class, 'login'])->name('login-page');
+Route::post('/login', [AuthController::class, 'authByLogin'])->name('login');
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -20,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => '/admin'], function () {
         Route::group(['controller' => ProductController::class, 'prefix' => '/products'], function () {
             Route::get('', 'adminIndex')->name('admin.products.index');
+            Route::get('/add', 'create');
             Route::get('/{id}', 'show');
         });
     });
@@ -27,8 +32,25 @@ Route::middleware('auth:sanctum')->group(function () {
 //    , а также кнопка "Добавить товар".
 });
 
+//with api
+Route::prefix('/api')->group(function () {
+
+    Route::post('/login', [AuthController::class, 'authByLogin'])->name('login');
+
+    Route::group(['controller' => ApiProductController::class, 'prefix' => '/products'], function () {
+        Route::get('', 'index');
+        Route::get('/{id}', 'show');
+    });
+    Route::group(['controller' => \App\Http\Controllers\Catalog\CategoryController::class, 'prefix' => '/categories'], function () {
+        Route::get('', 'index');
+    });
 
 
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/products', [ApiProductController::class, 'store'])->name('products.store');
+        Route::patch('/products/{id}', [ApiProductController::class, 'update'])->name('products.update');
+    });
+});
 
 //Route::get('/register', [\App\Http\Controllers\AuthController::class, 'register'])->name('register');
 //Route::post('/register', [\App\Http\Controllers\AuthController::class, 'actionRegister'])->name('actionRegister');

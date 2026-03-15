@@ -1,16 +1,14 @@
 <script setup>
     import Template from '../../Layouts/Template.vue';
-    import ProductList from "../../Components/ProductList.vue";
-
 
     defineProps({
-        products: Object
+        product: Object
     })
 </script>
 
 <template>
     <Template>
-        <ProductList :products/>
+        {{ product }}
     </Template>
 </template>
 <style scoped></style>
