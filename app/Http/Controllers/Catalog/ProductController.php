@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Catalog;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\IndexRequest;
 use App\Http\Requests\Product\StoreRequest;
+use App\Http\Requests\Product\UpdateRequest;
 use App\Http\Resources\Catalog\ProductResource;
 use App\Models\Product;
 use App\Services\Catalog\CategoryService;
@@ -26,10 +27,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $product)
+    public function show(Product $product)
     {
         return Inertia::render('Catalog/Products/Detail', [
-            'product' => (new \App\Services\Catalog\ProductService())->getOne($product)
+            'product' => ProductResource::make($product),
         ]);
     }
 
@@ -62,9 +63,7 @@ class ProductController extends Controller
             return redirect(route('admin.products.index'))->with('message', 'Товар успешно добавлен');
         }
 
-        return back()->withErrors([
-            'Ошибка создания товара'
-        ]);
+        return back()->withErrors(['Ошибка создания товара']);
     }
 
     /**
@@ -72,7 +71,27 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('Admin/Products/Edit', [
+            'product' => ProductResource::make($product),
+            'categories' => $this->categoryService->getAllCategories(),
+        ]);
     }
 
+    public function update(UpdateRequest $request, Product $product)
+    {
+        if ($product->update($request->validated())) {
+            return redirect(route('admin.products.index'))->with('message', 'Товар успешно обновлен');
+        }
+
+        return back()->withErrors(['Ошибка обновления товара']);
+    }
+
+    public function delete(Product $product)
+    {
+        if ($product->delete()) {
+            return redirect(route('admin.products.index'))->with('message', 'Товар успешно удален');
+        }
+
+        return back()->withErrors(['Ошибка удаления товара']);
+    }
 }

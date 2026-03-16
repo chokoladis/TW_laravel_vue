@@ -22,8 +22,4 @@ class ProductService
 
         return new ProductResource($product);
     }
-
-    // for admin
-
-
 }

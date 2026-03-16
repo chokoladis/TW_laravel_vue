@@ -19,7 +19,7 @@
                               class="card-link btn btn-primary">Ссылка карточки</Link>
                         <Link :href="`/admin/products/${product.id}/edit`" v-if="$page.props.auth"
                               class="card-link btn btn-outline-info">Редактировать</Link>
-                        <Link :href="`/admin/products/id`" v-if="$page.props.auth"
+                        <Link :href="`/admin/products/${product.id}`" method="delete" v-if="$page.props.auth"
                               class="card-link btn btn-outline-danger">Удалить</Link>
                     </div>
                 </div>

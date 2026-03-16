@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->float('price');
 
             $table->unsignedBigInteger('category_id')->index();
@@ -23,6 +23,7 @@ return new class extends Migration
                 ->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

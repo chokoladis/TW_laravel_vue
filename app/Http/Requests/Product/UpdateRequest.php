@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Product;
 
-use App\Http\Requests\ApiRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +23,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3',
-            'category_id' => 'required|exists:categories,id',
-            'description' => 'string',
+            'category_id' => 'nullable|exists:categories,id',
+            'description' => 'nullable|string',
             'price' => 'required|numeric|min:1',
         ];
     }

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['controller' => ProductController::class, 'prefix' => '/products'], function () {
-    Route::get('/{id}', 'show');
+    Route::get('/{product}', 'show');
 });
 
 Route::get('/login', [AuthController::class, 'login'])->name('login-page');
@@ -21,11 +21,16 @@ Route::post('/login', [AuthController::class, 'authByLogin'])->name('login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::group(['prefix' => '/admin'], function () {
+    Route::name('admin.')->prefix('/admin')->group(function () {
+
         Route::group(['controller' => ProductController::class, 'prefix' => '/products'], function () {
-            Route::get('', 'adminIndex')->name('admin.products.index');
-            Route::get('/add', 'create');
-            Route::get('/{id}', 'show');
+            Route::get('', 'adminIndex')->name('products.index');
+            Route::get('/add', 'create')->name('products.create');
+            Route::get('/{product}', 'show')->name('products.show');
+            Route::get('/{product}/edit/', 'edit')->name('products.edit');
+//            Route::post('/{id}/update/', 'edit');
+            Route::put('/{product}', 'update')->name('products.update');
+            Route::delete('/{product}', 'delete')->name('products.update');
         });
     });
 
@@ -39,7 +44,7 @@ Route::prefix('/api')->group(function () {
 
     Route::group(['controller' => ApiProductController::class, 'prefix' => '/products'], function () {
         Route::get('', 'index');
-        Route::get('/{id}', 'show');
+        Route::get('/{product}', 'show');
     });
     Route::group(['controller' => \App\Http\Controllers\Catalog\CategoryController::class, 'prefix' => '/categories'], function () {
         Route::get('', 'index');
@@ -48,7 +53,7 @@ Route::prefix('/api')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/products', [ApiProductController::class, 'store'])->name('products.store');
-        Route::patch('/products/{id}', [ApiProductController::class, 'update'])->name('products.update');
+        Route::patch('/products/{product}', [ApiProductController::class, 'update'])->name('products.update');
     });
 });
 
