@@ -27,6 +27,7 @@ class ProductController extends Controller
      */
     public function index(IndexRequest $request)
     {
+//        'categories' => $this->categoryService->getAllCategories()
         return $this->productService->get($request->validated());
     }
 
@@ -36,15 +37,6 @@ class ProductController extends Controller
     public function show(int $product)
     {
         return $this->productService->getOne($product);
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
     }
 
     /**

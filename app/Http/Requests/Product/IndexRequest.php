@@ -23,6 +23,7 @@ class IndexRequest extends FormRequest
     {
         return [
             'perPage' => 'integer|min:10|max:15',
+            'category_id' => 'nullable|exists:categories,id',
         ];
     }
 }

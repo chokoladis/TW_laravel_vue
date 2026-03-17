@@ -40,7 +40,8 @@ class ProductController extends Controller
     public function adminIndex(IndexRequest $request)
     {
         return Inertia::render('Admin/Products/Index', [
-            'products' => (new \App\Services\Catalog\ProductService())->get($request->validated())
+            'products' => $this->productService->get($request->validated()),
+            'categories' => $this->categoryService->getAllCategories()
         ]);
     }
 
